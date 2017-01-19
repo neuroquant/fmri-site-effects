@@ -1,12 +1,14 @@
-run('env.m'); 
+run('../env.m'); 
 
 dataset1 = load([GEN_DATAPATH filesep '3749595figshare/' filesep 'empirical_HCP']); 
 dataset2 = load([GEN_DATAPATH filesep '3749595figshare/' filesep 'empirical_Paris']); 
+%dataset2 = load([GEN_DATAPATH filesep '3749595figshare/' filesep 'empirical_HCP']); 
+
 
 % Create data matrix Y and covariate matrix X;
 p = length(dataset1.TS) + length(dataset2.TS); 
 n_rois = size(dataset1.TS{1},1);
-n_volumes = min([size(dataset1.TS{1},2) size(dataset2.TS{1},2)]); 
+n_volumes = min([size(dataset1.TS{1},2) size(dataset2.TS{1},2) 300]); 
 
 Y = zeros(p,n_rois,n_volumes); 
 X = zeros(p,1,n_volumes);
@@ -20,20 +22,23 @@ for vol_no = 1:n_volumes;
 	for subj_no = 1:p1;
 		tmp_Y(subj_no,:) = dataset1.TS{subj_no}(:,vol_no);
 	end
+	if(standardize_rois)
+		std_y = std(tmp_Y(1:p1,:)); 
+		tmp_Y(1:p1,:) = bsxfun(@rdivide,tmp_Y(1:p1,:),std_y);
+	end
 	p2 = length(dataset2.TS);	
 	for subj_no = 1:p2
 		tmp_Y(p1+subj_no,:) = dataset2.TS{subj_no}(:,vol_no); 
 	end
+	if(standardize_rois)
+		std_y = std(tmp_Y(p1+1:p,:)); 
+		tmp_Y(p1+1:p,:) = bsxfun(@rdivide,tmp_Y(p1+1:p,:),std_y);
+	end
 	
 	tmp_X(1:p1,1) = 1; 
 	tmp_X(p1+1:p,1) = 2;
-	
-	if(standardize_rois)
-		std_y = std(tmp_Y); 
-		Y(:,:,vol_no) = bsxfun(@rdivide,tmp_Y,std_y);
-	else
-		Y(:,:,vol_no) = tmp_Y;
-	end
+
+	Y(:,:,vol_no) = tmp_Y;	
 	X(:,1:n_sites,vol_no) = dummyvar(tmp_X);
 	
 	clear tmp_Y tmp_X;
