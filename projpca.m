@@ -1,4 +1,4 @@
-function [output] = projpca(Y, X, varargin)
+function [output] = projpca(Y, X, center, varargin)
 	% Heterogeneity Test and Projected PCA
 	% 
 	% An example usecase would be to clean site effects per fMRI volume.
@@ -48,8 +48,18 @@ function [output] = projpca(Y, X, varargin)
 	d = size(X,2); 
 	
 	% Center rows
-	mu = mean(Y,1); 
-	Yc = bsxfun(@minus,Y,mu); 
+	if(exist('center','var'))
+		if(center)
+			mu = mean(Y,1); 
+			Yc = bsxfun(@minus,Y,mu); 
+		else
+			mu = zeros(1,t); 
+			Yc = Y;
+		end
+	else
+		mu = zeros(1,t); 
+		Yc = Y;
+	end
 	
 	% Solve for beta in Y = X*beta
 	SigX = pinv(X'*X);  
