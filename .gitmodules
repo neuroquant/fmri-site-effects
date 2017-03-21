@@ -1,3 +1,6 @@
 [submodule "ggmClass"]
 	path = ggmClass
 	url = git@github.com:mnarayan/ggmClass.git
+[submodule "connectivity-diagnostics"]
+	path = connectivity-diagnostics
+	url = git@github.com:TheEtkinLab/connectivity-diagnostics.git
