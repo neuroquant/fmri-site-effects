@@ -1,5 +1,10 @@
-# Adjust fMRI time-series for site effects
+# Adjust fMRI time-series for session and site effects
 
-This toolbox implements an approach to correct fMRI time-series or volumes for site effects. The residual time-series can be used to infer correlation matrices. 
+This toolbox implements a number of approaches to correct fMRI time-series or volumes for session specific artifacts and site effects. 
 
-Disclaimer: Toolbox is still being tested. 
+## Contents
+
+- `siteEffects`: A class containing useful methods for diagnosis of site effects and other metrics of improvement. 
+	- `siteEffects.within_group_error()` 
+
+- `projPCA`: Multivariate correction on time-series data tensor. Provides residual time-series after regressing out site effects can be used to infer correlation matrices. *Disclaimer: This function is still being tested, unfinished.*
