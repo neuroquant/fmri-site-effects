@@ -1,0 +1,3 @@
+[submodule "ggmClass"]
+	path = ggmClass
+	url = git@github.com:mnarayan/ggmClass.git
