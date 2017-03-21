@@ -1,4 +1,21 @@
 classdef siteEffects <  matlab.mixin.Copyable
+%SITEEFFECTS - General functions to diagnose and quantify session, site or other batch effects for matrix data. 
+% 
+%FUNCTIONS: 
+% 	
+% 	- siteEffects.within_group_error 	
+% 	  metrics = siteEffects.within_group_error('Individual', Aind, 'Pooled', Apooled); 
+% 
+% 
+	methods
+		
+		function disp(self)
+			
+			fprintf(help('siteEffects')); 
+			
+		end
+
+	end
 
 	methods(Static)
 
@@ -32,7 +49,7 @@ classdef siteEffects <  matlab.mixin.Copyable
 			for matrix_no = 1:n
 				metrics(matrix_no) = norm(Aind(:,:,matrix_no)-Apooled,'fro'); 		
 			end
-		end
+		end	
 
 	end
 end
