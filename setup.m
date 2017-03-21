@@ -2,6 +2,8 @@ MATLABLIB = fullfile(getenv('PI_HOME'),'software','matlab','matlab-library');
 addpath(genpath(fullfile(MATLABLIB,'lib','ArgUtils'))); 
 addpath(genpath(fullfile(MATLABLIB,'lib','BrewerMap'))); 
 addpath(genpath(fullfile(MATLABLIB,'lib','gramm'))); 
+addpath(genpath(fullfile(MATLABLIB,'test','matlab-xunit'))); 
+
 
 if(exist('ggmClass'))
 	warning('off')
