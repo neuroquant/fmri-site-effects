@@ -2,22 +2,22 @@ function demo_successive_norm(X)
 	
 	results = {};
 	
-	result{1}.method = 'standard';
-	result{1}.output = standard_correlation(X)
+	results{1}.method = 'Column Standardize';
+	results{1}.output = standard_correlation(X)
 	
-	result{2}.method = 'standard';
-	result{2}.output = standard_correlation_sn(X)
+	results{2}.method = 'Row-Column Standardize';
+	results{2}.output = standard_correlation_sn(X)
 	
 	
 	figure;
 	subplot(1,2,1); 
-	imagesc(result{1}.output.corr); axis equal image;
+	imagesc(results{1}.output.corr); axis equal image;
 	colormap('winter'); 
-	title(result{1}.method);
+	title(results{1}.method);
 	subplot(1,2,2); 
-	imagesc(result{2}.output.corr); axis equal image;
+	imagesc(results{2}.output.corr); axis equal image;
 	colormap('winter')
-	title(result{2}.method);
+	title(results{2}.method);
 		
 	
 end
@@ -26,7 +26,11 @@ end
 function output =  standard_correlation(X)
 	
 	output = struct()
-	ggmobj = GGM(X); 	
+	
+	X = standardize.standardize_cols(X);
+	
+	ggmobj = GGM(X);
+	ggmobj.MLECovEstimate();	 	
 	output.corr = ggmobj.Sigma;
 	
 end
@@ -34,6 +38,9 @@ end
 function output = standard_correlation_sn(X)
 	
 	output = struct();
+	
+	X = standardize.successive_normalize(X);
+	
 	ggmobj = GGM(X);
 	ggmobj.MLECovEstimate();
 	output.corr = ggmobj.Sigma;
