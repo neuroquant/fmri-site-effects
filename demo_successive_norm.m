@@ -24,7 +24,13 @@ function results =  demo_successive_norm(X,varargin)
 	
 	results{3}.method = 'Row-Column Sym Standardize';
 	results{3}.output = standard_correlation_sym_sn(X)
+		
+	disp(sprintf('Frob. MSE: Sigma_c - Sigma_sym = %.3f',  ...
+		norm(abs(results{2}.output.corr-results{3}.output.corr),'fro')));
 	
+	disp(sprintf('Frob. SSE: Sigma_c - Sigma_sym = %.3f', ...	
+		sum(sum((results{2}.output.corr-results{3}.output.corr).^2)) ));
+		
 	figure;
 	subplot(1,3,1); 
 	imagesc(results{1}.output.corr); axis equal image;
