@@ -22,16 +22,22 @@ function results =  demo_successive_norm(X,varargin)
 	results{2}.method = 'Row-Column Standardize';
 	results{2}.output = standard_correlation_sn(X)
 	
+	results{3}.method = 'Row-Column Sym Standardize';
+	results{3}.output = standard_correlation_sym_sn(X)
 	
 	figure;
-	subplot(1,2,1); 
+	subplot(1,3,1); 
 	imagesc(results{1}.output.corr); axis equal image;
 	colormap('winter'); 
 	title(results{1}.method);
-	subplot(1,2,2); 
+	subplot(1,3,2); 
 	imagesc(results{2}.output.corr); axis equal image;
 	colormap('winter')
 	title(results{2}.method);
+	subplot(1,3,3); 
+	imagesc(results{3}.output.corr); axis equal image;
+	colormap('winter')
+	title(results{3}.method);
 	
 	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
 	if(~exist(fname,'dir'))
@@ -58,6 +64,18 @@ function output = standard_correlation_sn(X)
 	
 	output = struct();
 	
+	X = standardize.successive_normalize(X);
+	
+	ggmobj = GGM(X);
+	ggmobj.MLECovEstimate();
+	output.corr = ggmobj.Sigma;
+	
+end
+
+function output = standard_correlation_sym_sn(X)
+	
+	output = struct();
+	
 	X = standardize.successive_normalize(X, ...
 						struct('method','sym'));
 	
@@ -66,3 +84,4 @@ function output = standard_correlation_sn(X)
 	output.corr = ggmobj.Sigma;
 	
 end
+
