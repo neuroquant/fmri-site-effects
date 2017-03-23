@@ -1,4 +1,18 @@
-function demo_successive_norm(X)
+function results =  demo_successive_norm(X,varargin)
+	
+	opts = struct();
+	opts.exportfig = true;
+	opts.exportfun = @(fname)(print('-dpng','-r150',fname));	
+	% if(exist('process_options'))
+	% 	[exportfig exportfun opts] = process_options(varargin,  ...
+	% 									'exportfig', opts.exportfig, ...
+	% 									'exportfun', opts.exportfun ...
+	% 									);
+	% else
+	% 	warning('KPMTools from matlab-library needed to process optional arguments');
+	% end
+	exportfig = opts.exportfig;
+	exportfun = opts.exportfun;
 	
 	results = {};
 	
@@ -18,7 +32,12 @@ function demo_successive_norm(X)
 	imagesc(results{2}.output.corr); axis equal image;
 	colormap('winter')
 	title(results{2}.method);
-		
+	
+	fname = ['tmp' filesep date]; 
+	if(~exist(fname,'dir'))
+		mkdir(fname)
+	end
+	exportfun(fullfile(fname,mfilename));	
 	
 end
 
