@@ -10,7 +10,6 @@ addpath(genpath(fullfile(MATLABLIB,'lib','BrewerMap')));
 addpath(genpath(fullfile(MATLABLIB,'lib','gramm'))); 
 addpath(genpath(fullfile(MATLABLIB,'test','matlab-xunit'))); 
 
-
 if(exist('ggmClass') & exist('GGM','class'))
 	warning('off')
 	addpath('ggmClass');
