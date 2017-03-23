@@ -31,19 +31,32 @@ function results =  demo_successive_norm(X,varargin)
 	disp(sprintf('Frob. SSE: Sigma_c - Sigma_sym = %.3f', ...	
 		sum(sum((results{2}.output.corr-results{3}.output.corr).^2)) ));
 		
-	figure;
-	subplot(1,3,1); 
+	figure('Position',[50 100 800 650]);
+	subplot(2,3,1); 
 	imagesc(results{1}.output.corr); axis equal image;
 	colormap('winter'); 
 	title(results{1}.method);
-	subplot(1,3,2); 
+	subplot(2,3,2); 
 	imagesc(results{2}.output.corr); axis equal image;
 	colormap('winter')
 	title(results{2}.method);
-	subplot(1,3,3); 
+	subplot(2,3,3); 
 	imagesc(results{3}.output.corr); axis equal image;
 	colormap('winter')
 	title(results{3}.method);
+	subplot(2,3,4); 	
+	histogram(results{1}.output.corr(:),'Normalization','pdf'); 
+	axis equal image;
+	title(results{1}.method); xlabel('correlation'); ylabel('pdf')
+	subplot(2,3,5); 
+	histogram(results{2}.output.corr(:),'Normalization','pdf'); 
+	axis equal image;
+	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
+	subplot(2,3,6); 
+	histogram(results{3}.output.corr(:),'Normalization','pdf'); 
+	axis equal image;
+	colormap('winter')
+	title(results{3}.method);xlabel('correlation'); ylabel('pdf')
 	
 	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
 	if(~exist(fname,'dir'))
