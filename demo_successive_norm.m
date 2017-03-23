@@ -33,7 +33,7 @@ function results =  demo_successive_norm(X,varargin)
 	colormap('winter')
 	title(results{2}.method);
 	
-	fname = ['tmp' filesep date]; 
+	fname = ['tmp' filesep datestr(now,'DD-MM-YYYY-hhmmss')]; 
 	if(~exist(fname,'dir'))
 		mkdir(fname)
 	end
@@ -58,7 +58,8 @@ function output = standard_correlation_sn(X)
 	
 	output = struct();
 	
-	X = standardize.successive_normalize(X);
+	X = standardize.successive_normalize(X, ...
+						struct('method','sym'));
 	
 	ggmobj = GGM(X);
 	ggmobj.MLECovEstimate();
