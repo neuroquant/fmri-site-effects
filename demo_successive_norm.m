@@ -33,7 +33,7 @@ function results =  demo_successive_norm(X,varargin)
 	colormap('winter')
 	title(results{2}.method);
 	
-	fname = ['tmp' filesep datestr(now,'DD-MM-YYYY-hhmmss')]; 
+	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
 	if(~exist(fname,'dir'))
 		mkdir(fname)
 	end
