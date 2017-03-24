@@ -61,19 +61,19 @@ function results =  demo_robust_covariance(X,varargin)
 	title(results{4}.method);
 	subplot(2,4,5); 	
 	histogram(results{1}.output.corr(:),'Normalization','probability'); 
-	axis auto
+	ylim([-1.2 1.2]);axis tight; 
 	title(results{1}.method); xlabel('correlation'); ylabel('pdf')
 	subplot(2,4,6); 
 	histogram(results{2}.output.corr(:),'Normalization','probability'); 
-	axis auto;
+	ylim([-1.2 1.2]);axis tight; 
 	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
 	subplot(2,4,7); 
 	histogram(results{3}.output.corr(:),'Normalization','probability'); 
-	axis auto;
+	ylim([-1.2 1.2]);axis tight; 
 	title(results{3}.method);xlabel('correlation'); ylabel('pdf')
 	subplot(2,4,8); 
 	histogram(results{4}.output.corr(:),'Normalization','probability'); 
-	axis auto;
+	ylim([-1.2 1.2]);axis tight; 
 	title(results{4}.method);xlabel('correlation'); ylabel('pdf')
 	
 	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
