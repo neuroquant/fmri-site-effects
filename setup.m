@@ -41,7 +41,7 @@ if(USE_MATLAB_LIBRARY)
 end
 
 % Install submodule if missing
-if(exist('ggmClass') & exist('GGM','class'))
+if(exist('ggmClass') & exist('ggmClass/setup.m','file'))
 	warning('off')
 	addpath('ggmClass');
 	addpath('ggmClass/external'); 
