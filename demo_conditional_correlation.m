@@ -130,6 +130,6 @@ function output =  conditional_correlation(X,Y)
 	output.corr = Sigma;
 	output.nuisance = results.nCov;
 	output.corr2 = covariance.mle_sample_covariance(results.X_perpY, ...
-												struct('standardize',false));
+												struct('standardize',true));
 	
 end
