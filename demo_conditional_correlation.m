@@ -1,4 +1,4 @@
-function results =  demo_conditional_covariance(X,varargin)
+function results =  demo_conditional_covariance(X,Y,varargin)
 
 
 	opts = struct();
@@ -24,7 +24,7 @@ function results =  demo_conditional_covariance(X,varargin)
 	results{2}.output = standard_correlation_sn(X);
 
 	results{3}.method = 'Conditional Correlation';
-	results{3}.output = conditional_correlation(X);
+	results{3}.output = conditional_correlation(X,Y);
 
 	results{4}.method = 'NSR plus Sample Correlation';
 	results{4}.output = results{3}.output;
@@ -119,7 +119,13 @@ function output =  conditional_correlation(X,Y)
 	% Only uses usual column standardize (i.e. correlation)
 	output = struct()
 		
-	[Sigma results] = covariance.conditional_sample_covariance_separate(X);
+	%[Sigma results] = covariance.conditional_sample_covariance_separate(X);
+	
+		
+	[Sigma results] = covariance.conditional_sample_covariance_separate(X, ...
+									struct('verbose',false,...
+											'nuisance',Y) ...	
+											);
 	 	
 	output.corr = Sigma;
 	output.nuisance = results.nCov;
