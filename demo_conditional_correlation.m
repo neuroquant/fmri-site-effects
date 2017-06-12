@@ -3,7 +3,7 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 
 	opts = struct();
 	opts.exportfig = true;
-	opts.exportfun = @(fname)(print('-dpng','-r150',fname));	
+	opts.exportfun = @(fname)(print('-dpng','-r300',fname));	
 	% if(exist('process_options'))
 	% 	[exportfig exportfun opts] = process_options(varargin,  ...
 	% 									'exportfig', opts.exportfig, ...
@@ -15,6 +15,12 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 	exportfig = opts.exportfig;
 	exportfun = opts.exportfun;
 
+	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMM')]; 
+	if(~exist(fname,'dir'))
+		mkdir(fname)
+	end
+    opts.outputdir = fname;
+
 	results = {};
 	
 	results{1}.method = 'Sample Correlation';
@@ -23,12 +29,12 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 	results{2}.method = 'RC, Sample Correlation';
 	results{2}.output = standard_correlation_sn(X);
 
-	results{3}.method = 'Conditional Correlation';
+	results{3}.method = 'Nuisance Correlation';
 	results{3}.output = conditional_correlation(X,Y);
 
-	results{4}.method = 'NSR plus Sample Correlation';
+	results{4}.method = 'Denoised Sample Correlation';
 	results{4}.output = results{3}.output;
-	results{4}.output.corr = results{3}.output.corr2;
+	results{4}.output.corr = results{3}.output.corr;
 
 	disp(sprintf('Frob. MSE: Sigma_std - Sigma_cond = %.3f',  ...
 		norm(abs(results{1}.output.corr-results{3}.output.corr),'fro')));
@@ -54,7 +60,7 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 	colormap(colormapfun())
 	title(results{2}.method);
 	subplot(2,4,3); 
-	imagesc(results{3}.output.corr); axis equal image;
+	imagesc(results{3}.output.nuisance); axis equal image;
 	colormap(colormapfun())
 	title(results{3}.method);
 	subplot(2,4,4); 
@@ -70,19 +76,16 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
 	subplot(2,4,7); 
-	histogram(results{3}.output.corr(:),'Normalization','probability'); 
+	histogram(results{3}.output.nuisance(:),'Normalization','probability'); 
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{3}.method);xlabel('correlation'); ylabel('pdf')
 	subplot(2,4,8); 
-	histogram(results{4}.output.corr(:),'Normalization','probability'); 
+	histogram(results{4}.output.corr2(:),'Normalization','probability'); 
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{4}.method);xlabel('correlation'); ylabel('pdf')
-	
-	fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
-	if(~exist(fname,'dir'))
-		mkdir(fname)
-	end
-	exportfun(fullfile(fname,mfilename));	
+    
+	exportfun(fullfile(fname,mfilename));
+
 
 end
 
@@ -123,13 +126,13 @@ function output =  conditional_correlation(X,Y)
 	
 		
 	[Sigma results] = covariance.conditional_sample_covariance_separate(X, ...
-									struct('verbose',false,...
+									struct('verbose',true,...
 											'nuisance',Y) ...	
 											);
 	 	
 	output.corr = Sigma;
 	output.nuisance = results.nCov;
 	output.corr2 = covariance.mle_sample_covariance(results.X_perpY, ...
-												struct('standardize',true));
+												struct('standardize',false));
 	
 end
