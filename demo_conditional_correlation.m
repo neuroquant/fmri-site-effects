@@ -50,41 +50,63 @@ function results =  demo_conditional_covariance(X,Y,varargin)
 		colormapfun = @winter;
 	end
 	
-	figure('Position',[50 100 800 650]);
-	subplot(2,4,1); 
-	imagesc(results{1}.output.corr); axis equal image;
-	colormap(colormapfun()); 
+    addpath(genpath('../MATLAB/packages/spreadFigures/tightfig/'));
+    figure(1);
+	set(gcf,'Position',[10 150  1200 650]);
+	subplot(2,2,1); 
+	imagesc(results{1}.output.corr); 
+    colormap(colormapfun()); axis image; colorbar;;
 	title(results{1}.method);
-	subplot(2,4,2); 
-	imagesc(results{2}.output.corr); axis equal image;
-	colormap(colormapfun())
-	title(results{2}.method);
-	subplot(2,4,3); 
-	imagesc(results{3}.output.nuisance); axis equal image;
-	colormap(colormapfun())
+    set(gca,'fontsize',16);
+	subplot(2,2,2); 
+	imagesc(results{3}.output.nuisance); 
+    colormap(colormapfun()); axis image; colorbar;
 	title(results{3}.method);
-	subplot(2,4,4); 
-	imagesc(results{4}.output.corr); axis equal image;
-	colormap(colormapfun())
+    set(gca,'fontsize',16);
+	subplot(2,2,3); 
+	imagesc(results{4}.output.corr); 
+    colormap(colormapfun()); axis image; colorbar;;
 	title(results{4}.method);
-	subplot(2,4,5); 	
-	histogram(results{1}.output.corr(:),'Normalization','probability'); 
+    set(gca,'fontsize',16);
+	subplot(2,2,4); 
+	imagesc(results{2}.output.corr); 
+    colormap(colormapfun()); axis image; colorbar;
+	title(results{2}.method);
+    set(gca,'fontsize',16);
+	
+    exportfun(fullfile(fname,mfilename));
+    % if(exist('tightfig'))
+    %     tightfig;
+    % end
+    
+    figure(2)
+	set(gcf,'Position',[10 150  1200 650]);
+	subplot(2,2,1); 
+    upper_idx = find(reshape(triu(ones(size(results{1}.output.corr)),1),  ...
+                                [1 numel(results{1}.output.corr)])); 	
+	histogram(results{1}.output.corr(upper_idx),'Normalization','probability'); 
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{1}.method); xlabel('correlation'); ylabel('pdf')
-	subplot(2,4,6); 
-	histogram(results{2}.output.corr(:),'Normalization','probability'); 
-	ylim([-1.2 1.2]);axis tight; 
-	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
-	subplot(2,4,7); 
-	histogram(results{3}.output.nuisance(:),'Normalization','probability'); 
+    set(gca,'fontsize',16);
+	subplot(2,2,2); 
+	histogram(results{3}.output.nuisance(upper_idx),'Normalization','probability'); 
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{3}.method);xlabel('correlation'); ylabel('pdf')
-	subplot(2,4,8); 
-	histogram(results{4}.output.corr2(:),'Normalization','probability'); 
+    set(gca,'fontsize',16);
+	subplot(2,2,3); 
+	histogram(results{4}.output.corr(upper_idx),'Normalization','probability'); 
 	ylim([-1.2 1.2]);axis tight; 
 	title(results{4}.method);xlabel('correlation'); ylabel('pdf')
-    
-	exportfun(fullfile(fname,mfilename));
+    set(gca,'fontsize',16);
+	subplot(2,2,4); 
+	histogram(results{2}.output.corr(upper_idx),'Normalization','probability'); 
+	ylim([-1.2 1.2]);axis tight; 
+	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
+    set(gca,'fontsize',16);
+    % if(exist('tightfig'))
+    %     tightfig;
+    % end
+	exportfun(fullfile(fname,[mfilename '2']));
 
 
 end
@@ -120,17 +142,16 @@ end
 
 function output =  conditional_correlation(X,Y)
 	% Only uses usual column standardize (i.e. correlation)
-	output = struct()
+	output = struct();
 		
 	%[Sigma results] = covariance.conditional_sample_covariance_separate(X);
 	
 		
-	[Sigma results] = covariance.conditional_sample_covariance_separate(X, ...
+	[~, results] = covariance.conditional_sample_covariance_separate(X, ...
 									struct('verbose',true,...
 											'nuisance',Y) ...	
 											);
-	 	
-	output.corr = Sigma;
+	output.corr = results.Sigma;
 	output.nuisance = results.nCov;
 	output.corr2 = covariance.mle_sample_covariance(results.X_perpY, ...
 												struct('standardize',false));
