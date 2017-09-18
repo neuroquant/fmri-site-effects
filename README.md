@@ -7,13 +7,12 @@ This toolbox implements a number of approaches to correct fMRI time-series or vo
 
 This toolbox has 3 types of functions. 
 
-- [Primary functions](#primary-func) to measure reliability, implement alternatives to the standard correlation matrix that adjust for nuisance variation or artifacts. 
+- [Primary functions](#primary-functions) to measure reliability, implement alternatives to the standard correlation matrix that adjust for nuisance variation or artifacts. 
 
-- [Demo functions](#demo-func) that illustrate the function API and usage of primary functions. These functions start with `demo_`
+- [Demo functions](#demo-functions) that illustrate the function API and usage of primary functions. These functions start with `demo_`
 
-- [Analysis functions](#analysis-func) that perform a detailed case study of a particular method or pipeline on a dataset. These functions start with `analyze_`
+- [Analysis functions](#analysis-functions) that perform a detailed case study of a particular method or pipeline on a dataset. These functions start with `analyze_`
 
-<a name="primary-func"</a>
 	
 ## Primary functions 
 
@@ -23,7 +22,6 @@ This toolbox has 3 types of functions.
 
 - `projpca`, `demo_projpca`: Multivariate correction on time-series data tensor. Provides residual time-series after regressing out site effects can be used to infer correlation matrices. *Disclaimer: This function is still being tested, unfinished.*
 
-<a name="demo-func"</a>
 ## Demo functions 
 
 - `demo_successive_normalization`: Demonstrates examples of calling ggmClass for data cleaning and correlation estimation. Is a wrapper around local functions that combine different forms of standardization of data matrix with a variety of covariance estimators. Exported figures can be found in `tmp/<date>/demo_successive_norm_*.png`
@@ -35,12 +33,7 @@ This toolbox has 3 types of functions.
 	
 ## Analysis functions 
 
-<a label="analysis-func"</a>
-
-
-
 - `analyze_etkinlab_sessioneffects.m`: *To be documented*
-
 
 
 ## Installation
