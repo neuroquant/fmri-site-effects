@@ -13,8 +13,7 @@ This toolbox has 3 types of functions.
 
 - [Analysis functions](#analysis-func) that perform a detailed case study of a particular method or pipeline on a dataset. These functions start with `analyze_`
 
-## Primary functions
-<a name="primary-func"</a>
+## Primary functions <a name="primary-func"</a>
 
 - `siteEffects`: A class containing useful methods for diagnosis of site effects and other metrics of improvement. 
 	- `siteEffects.within_group_error()` 
@@ -22,8 +21,7 @@ This toolbox has 3 types of functions.
 
 - `projpca`, `demo_projpca`: Multivariate correction on time-series data tensor. Provides residual time-series after regressing out site effects can be used to infer correlation matrices. *Disclaimer: This function is still being tested, unfinished.*
 
-## Demo functions
-<a name="demo-func"</a>
+## Demo functions <a name="demo-func"</a>
 
 - `demo_successive_normalization`: Demonstrates examples of calling ggmClass for data cleaning and correlation estimation. Is a wrapper around local functions that combine different forms of standardization of data matrix with a variety of covariance estimators. Exported figures can be found in `tmp/<date>/demo_successive_norm_*.png`
 
@@ -31,8 +29,7 @@ This toolbox has 3 types of functions.
 
 - `demo_robust_covariance.m`: Demonstrates examples of calling ggmClass to call robust estimators of the covariance or correlation matrix. 
 
-## Analysis functions 
-<a name="analysis-func"</a>
+## Analysis functions <a name="analysis-func"</a>
 
 
 - `analyze_etkinlab_sessioneffects.m`: *To be documented*
