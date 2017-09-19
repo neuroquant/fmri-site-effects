@@ -1,0 +1,7 @@
+{
+ "Data":"X",
+ "Dimensions": ["Time", "Regions", "Subjects"],
+ "PropertyNames":["tslist","roilist","subjlist"],
+ "Level1": "Time",
+ "Level2": "Subjects"
+}
