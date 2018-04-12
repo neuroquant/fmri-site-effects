@@ -1,5 +1,8 @@
 # A toolbox to quantify and adjust for session and site effects in fMRI time-series
 
+[![Gitter](https://badges.gitter.im/TheEtkinLab/TheEtkinLab.svg)](https://gitter.im/TheEtkinLab/TheEtkinLab)
+
+
 This toolbox implements a number of approaches to correct fMRI time-series or volumes for session specific artifacts and site effects, aka "batch Effects". 
 
 
@@ -34,6 +37,10 @@ This toolbox has 3 types of functions.
 ## Analysis functions 
 
 - `analyze_etkinlab_sessioneffects.m`: *To be documented*
+
+- `analyze_etkinlab_siteeffects.m`: *To be documented*
+
+- `analyze_abide_siteeffects.m`: *To be documented*
 
 
 ## Installation
