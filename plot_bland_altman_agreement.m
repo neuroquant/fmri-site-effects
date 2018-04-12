@@ -1,4 +1,4 @@
-function grammobj = plot_altman_agreement(rater1,rater2)
+function [grammobj kendallcoef] = plot_altman_agreement(rater1,rater2)
 % PLOT_ALTMAN_AGREEMENT
 % Plots differences vs. mean
 %     
