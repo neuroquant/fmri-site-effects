@@ -1,0 +1,27 @@
+{
+    "dataset": [
+     {
+    "name": "HCP1200_GroupPCA",
+    "description": "Group PCA Timeseries (4500 x grayordinates). Can be used to compute a benchmark correlation matrix",
+    "dir": "data/benchmark/HCP_3T/",
+    "parcellations": ["Gordon333", "SchaeferYeo_100Parcels_7Network"],
+    "fieldname": ["Data"]
+    },
+    {
+    "name": "HCP1200",
+    "subject_id": [103818],
+    "description": "Individual ICA-Fix Cleaned Timeseries",
+    "dir": "data/derivatives/HCP_3T/",
+    "parcellations": ["Gordon333", "SchaeferYeo_100Parcels_7Network"],
+    "fieldname": ["Data"]
+    },
+    {
+    "name": "MSC",
+    "subject_id": ["MSC01", "MSC02", "MSC03"],
+    "description": "Midnight Scan Club dataset with 10 repeated measures per subject",
+    "dir": "data/derivatives/MSC/",
+    "parcellations": ["Gordon333", "SchaeferYeo_100Parcels_7Network"],
+    "fieldname": ["Data"]
+    }  
+]
+}
