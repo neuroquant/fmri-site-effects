@@ -144,7 +144,7 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
     grammobj.set_text_options('base_size',20,'title_scaling',1.1);
     switch geom_type
     case 'geom_point'
-        grammobj.axe_property('xlim',[-0.3 1],'ylim',[-.65 .65]);
+        grammobj.axe_property('xlim',[-0.3 1],'ylim',[-.4 .4]);
     end
     grammobj.no_legend();
     
