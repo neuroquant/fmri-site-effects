@@ -32,7 +32,7 @@ function results = analyze_etkinlab_sessioneffects(varargin)
     % test re-test mccc 
     exportfun = @(filename)(print('-dpng','-r150',filename));
     %fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy')];
-    fname = ['tmp' filesep '22-May-2018'];    
+    fname = ['tmp' filesep '15-Oct-2018'];    
     if(~exist(fname,'dir'))
         mkdir(fname)
     end
@@ -141,11 +141,11 @@ function results = analyze_etkinlab_sessioneffects(varargin)
         end
     
     case 'best-eegfmri-cpac'
-        
+        clear studydata
         pipeline = 'etkinlab_analysis';
         resttype = '';
-        n_time = 800;
-        fname = [fname '-' resttype 'trt' ['-t' num2str(n_time)] ];
+        n_time = 840;
+        fname = [fname '-' resttype 'trt-tp1.1-tp2.2' ['-t' num2str(n_time)] ];
         if(~exist(fname))
             mkdir(fname)
         end
@@ -156,36 +156,36 @@ function results = analyze_etkinlab_sessioneffects(varargin)
         
         datadir = fullfile(getenv('HOME'),'MATLAB','kggm2016-paper','data');
         studydata = ...
-             load(fullfile(datadir,'dataset_SchaeferYeo100_best_rfmri')); 
+             load(fullfile(datadir,'dataset_SchaeferYeo100_best_rfmri_2')); 
 
         
-        session1_prefix = ['tp1_efmri_' 'rest2'];
-        session1_idx = 1:length(studydata.files);
-        studydata.session1.subjects = studydata.files;
+        session1_prefix = ['ses-tp1' 'run-1'];
+        session1_idx = 1:length(studydata.files)
+        studydata.session1.subjects = studydata.files
         
-        session2_prefix = ['tp2_efmri_' 'rest1'];
+        session2_prefix = ['ses-tp2' 'run-2'];
         session2_idx = 1:length(studydata.files)
         studydata.session2.subjects = studydata.files;
         
         
         all_subnames = ...
-              cellfun(@num2str,num2cell(1:14),'UniformOutput',false);
+              cellfun(@num2str,num2cell(1:17),'UniformOutput',false);
         
         for ii=1:length(all_subnames)
 
             if(ii<=length(studydata.X) && ...
                  ~isempty(studydata.X{ii}{1}))
                 studydata.session1.X{ii} = ...
-                 squeeze(studydata.X{ii}{1}(11:810,1:100));
+                 squeeze(studydata.X{ii}{1}(10:850,1:100));
             else
                  studydata.session1.X{ii} = [];
                  studydata.session1.subjects{ii} = [];
             end
 
             if(ii<=length(studydata.X) && length(studydata.X{ii})>2 && ...
-                 ~isempty(studydata.X{ii}{3}))
+                 ~isempty(studydata.X{ii}{4}))
                  studydata.session2.X{ii} = ...
-                 squeeze(studydata.X{ii}{3}(11:810,1:100));
+                 squeeze(studydata.X{ii}{4}(10:850,1:100));
             else
                   studydata.session2.X{ii} = [];
                   studydata.session2.subjects{ii} = [];                  
@@ -193,14 +193,12 @@ function results = analyze_etkinlab_sessioneffects(varargin)
               
              tmp_subj_no = [];  
         end
-        
         both_subjects_idx = ...
                      ~(cellfun(@isempty,studydata.session2.subjects) | ...
-                                cellfun(@isempty,studydata.session1.subjects));
+                            cellfun(@isempty,studydata.session1.subjects));
         studydata.session1.X = studydata.session1.X(both_subjects_idx);
         studydata.session2.X = studydata.session2.X(both_subjects_idx);
         nsubjects = sum(both_subjects_idx)
-        studydata.session1
         studydata.roilabels.table = readtable('/Volumes/MACBOOKUSB/Datasets/Schaefer2018_LocalGlobal/Parcellations/MNI/Schaefer2018_100Parcels_7Networks_order.txt','Delimiter','\t','ReadVariableNames',0);
         studydata.subjects.labels = all_subnames;
         studydata.subjects.index = both_subjects_idx;
@@ -213,8 +211,8 @@ function results = analyze_etkinlab_sessioneffects(varargin)
         
         pipeline = 'etkinlab_analysis';
         resttype = '';
-        n_time = 400;
-        fname = [fname '-' resttype 'tp1' ['-t' num2str(n_time)] ];
+        n_time = 820;
+        fname = [fname '-' resttype '' ['-t' num2str(n_time)] ];
         if(~exist(fname))
             mkdir(fname)
         end
@@ -235,7 +233,7 @@ function results = analyze_etkinlab_sessioneffects(varargin)
          find(~cellfun(@isempty,strfind(subNames,session1_prefix)));
         studydata.session1.subjects = subNames(session1_idx);
         
-        session2_prefix = ['tp1_efmri_' 'rest2'];
+        session2_prefix = ['tp2_efmri_' 'rest2'];
         session2_idx = ...
             find(~cellfun(@isempty,strfind(subNames,session2_prefix)));
         studydata.session2.subjects = subNames(session2_idx);
@@ -249,7 +247,7 @@ function results = analyze_etkinlab_sessioneffects(varargin)
                 strfind(subNames(session1_idx),all_subnames(ii))));
              if(~isempty(tmp_subj_no))
                 studydata.session1.X{ii} = ...
-                 squeeze(tmpdata.signals(session1_idx(tmp_subj_no),1:100,11:410))';
+                 squeeze(tmpdata.signals(session1_idx(tmp_subj_no),1:100,1:820))';
                  studydata.session1.subjects{ii} = subNames(session1_idx(tmp_subj_no));
                  
              else
@@ -264,7 +262,7 @@ function results = analyze_etkinlab_sessioneffects(varargin)
                  strfind(subNames(session2_idx),all_subnames(ii))));
               if(~isempty(tmp_subj_no))
                  studydata.session2.X{ii} = ...
-                  squeeze(tmpdata.signals(session2_idx(tmp_subj_no),1:100,11:410))';
+                  squeeze(tmpdata.signals(session2_idx(tmp_subj_no),1:100,1:820))';
                  studydata.session2.subjects{ii} = ...
                   subNames(session2_idx(tmp_subj_no));
               else
@@ -329,6 +327,7 @@ function results = analyze_etkinlab_sessioneffects(varargin)
                     ii
                     ['session' num2str(sessionno)]
                 end
+                studydata
                 X = studydata.(['session' num2str(sessionno)]).X{ii};
                 X = X(1:n_time,:);
                 %Y = mean(X,2);
