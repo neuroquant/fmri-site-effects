@@ -31,7 +31,7 @@ function results =  demo_successive_norm(X,varargin)
 	disp(sprintf('Frob. SSE: Sigma_c - Sigma_sym = %.3f', ...	
 		sum(sum((results{2}.output.corr-results{3}.output.corr).^2)) ));
 		
-	figure('Position',[50 100 800 650]);
+	figure('Position',[50 100 900 650]);
 	subplot(2,3,1); 
 	imagesc(results{1}.output.corr); axis equal image;
 	colormap('winter'); 
@@ -46,15 +46,15 @@ function results =  demo_successive_norm(X,varargin)
 	title(results{3}.method);
 	subplot(2,3,4); 	
 	histogram(results{1}.output.corr(:),'Normalization','pdf'); 
-	axis equal image;
+	axis equal; ylim([-0.1,2]);
 	title(results{1}.method); xlabel('correlation'); ylabel('pdf')
 	subplot(2,3,5); 
 	histogram(results{2}.output.corr(:),'Normalization','pdf'); 
-	axis equal image;
+	axis equal; ylim([-0.1,2]);
 	title(results{2}.method);xlabel('correlation'); ylabel('pdf')
 	subplot(2,3,6); 
 	histogram(results{3}.output.corr(:),'Normalization','pdf'); 
-	axis equal image;
+	axis equal; ylim([-0.1,2]);
 	colormap('winter')
 	title(results{3}.method);xlabel('correlation'); ylabel('pdf')
 	
