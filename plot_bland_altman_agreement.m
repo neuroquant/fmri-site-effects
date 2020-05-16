@@ -11,24 +11,32 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
 %   (optional)
 %   - LOA is a 3 x 2 where each column (1) provides mean/ci for lower agreement interval and column (2) provides mean/ci for upper agreement interval
 
+		opts = struct();
+		opts.exportfig = true;
+		opts.exportfun = @(fname)(print('-dpng','-r150',fname));	
+		exportfig = opts.exportfig;
+		exportfun = opts.exportfun;
 
     p1 = length(rater1);
     p2 = length(rater2);
     
-    diff_method = 'MD';
+    diff_method = 'raw';
     
-	if(exist('brewermap'))	
-		colormapfun = @()(flipud(brewermap(length(colormap),'RdYlBu')));
-		close all;
-	else
-		colormapfun = @winter;
-	end
+		if(exist('brewermap'))	
+			colormapfun = @()(flipud(brewermap(length(colormap),'RdYlBu')));
+			close all;
+		else
+			colormapfun = @winter;
+		end
     
-    if(ndims(rater1)==2 && size(rater1,1)==size(rater1,2))
-        trid_idx = find(triu(ones(p1,p1),1));
-        rater1 = rater1(trid_idx);
-        rater2 = rater2(trid_idx);
-    end
+    if(ndims(rater1)==2 && (size(rater1,1)==size(rater1,2)))
+			disp('Taking upper-diagonal values of the networks')
+      trid_idx = find(triu(ones(p1,p1),1));
+      rater1 = rater1(trid_idx);
+      rater2 = rater2(trid_idx);
+    else
+			disp('Does not meet correlation matrix criteria')
+		end
 
 
     switch diff_method
@@ -44,10 +52,10 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
         y_diff = rater2;
         x_mean = rater1;
         size(y_diff)
-        
     end
     
-    y_diff_std = std(y_diff); 
+    y_diff_std = std(y_diff(:));
+		size(y_diff)
     
     switch nargin
         
@@ -64,15 +72,16 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
     otherwise
         disp('Assumes two arguments by default.')
         loa_int = y_diff_std;
+				size(loa_int)
         
         disp('Proportion of Strong Features within Limits');
-        x_strong = .3;
+        x_strong = .5;
         idx_large = find(abs(x_mean)>x_strong);
         prop_wLOA = 1 - sum((y_diff(idx_large) >  y_diff_std) | ...
                         (y_diff(idx_large) < - y_diff_std))/length(idx_large);
-        prop_wLOA
+				length(prop_wLOA);
     end
-    
+   
 
     % kendallcoef = reliability.kendallsW(cat(2,rater1,rater2));
     % disp('Kendalls Agreement (W)')
@@ -111,7 +120,7 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
         
         grammobj.geom_point();
         grammobj.geom_jitter('width',.05);
-        grammobj.set_point_options('base_size',5);
+        grammobj.set_point_options('base_size',2);
         
         %
         grammobj.geom_hline('yintercept',0,'style','k-');
@@ -120,7 +129,7 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
             grammobj.geom_hline('yintercept',y_diff_std,'style','k--');
             grammobj.geom_hline('yintercept',-y_diff_std,'style','k--');
         else
-            loa_int
+						loa_int;
             grammobj.geom_hline('yintercept',loa_int(1,1),'style','r--');
             grammobj.geom_hline('yintercept',loa_int(1,2),'style','r--');
             % grammobj.geom_hline('yintercept',loa_int(2,1),'style','k-.');
@@ -144,11 +153,16 @@ function [grammobj prop_wLOA y_diff x_mean] = plot_altman_agreement(rater1,rater
     grammobj.set_text_options('base_size',20,'title_scaling',1.1);
     switch geom_type
     case 'geom_point'
-        grammobj.axe_property('xlim',[-0.3 1],'ylim',[-.4 .4]);
+        grammobj.axe_property('xlim',[-0.6 1],'ylim',[-1.5 1.5]);
     end
     grammobj.no_legend();
     
     grammobj.draw()
 
+		fname = ['tmp' filesep datestr(now,'dd-mmm-yyyy-HHMMSS')]; 
+		if(~exist(fname,'dir'))
+			mkdir(fname)
+		end
+		exportfun(fullfile(fname,mfilename));	
     
 end
